@@ -1,18 +1,27 @@
-# !/bin/bash
+#!/bin/bash
 # For Ubuntu 22.04
 # Intsalling Java
-sudo apt update
-sudo apt install fontconfig openjdk-21-jre -y
-java --version
 
-# Installing Jenkins
-sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
-  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt update
-sudo apt install jenkins -y
+
+apt-get update -y
+apt-get install -y openjdk-21-jre fontconfig
+
+# Add Jenkins 2026 signing key (correct key for March 2026)
+wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+# Add Jenkins repository
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | \
+  tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+apt-get update -y
+apt-get install -y jenkins
+
+systemctl enable jenkins
+systemctl start jenkins
+
+
+
 
 # Installing Docker
 sudo apt update
